@@ -1,0 +1,120 @@
+* {
+  margin: 0;
+  color: whitesmoke;
+}
+
+.app {
+  width: 100vw;
+  height: 100vh;
+  display: grid;
+  background-color: rgb(42, 41, 41);
+  place-items: center;
+
+}
+
+.app_body {
+  width: 90vw;
+  height: 90vh;
+  align-items: center;
+  border-radius: 5px;
+  background-color: rgb(26, 25, 25);
+  box-shadow: 0px 0px 15px 0px whitesmoke;
+  display: flex;
+  place-content: center;
+}
+
+.login {
+  height: 50%;
+  width: 30%;
+  padding-left: 2%;
+  padding-right: 2%;
+  box-shadow: 0px 0px 15px 0px wheat;
+  border-radius: 10px;
+}
+
+.login-header {
+  display: grid;
+  place-items: center;
+  height: 20%;
+}
+
+form {
+  height: 60%;
+}
+
+.login-body {
+  /* border: 2px solid white; */
+  background-color: rgb(33, 32, 32);
+  padding: 5%;
+  height: 50%;
+  border-top-right-radius: 10px;
+  border-top-left-radius: 10px;
+  font-size: 13px;
+}
+
+.login-body>input {
+  background-color: rgb(54, 54, 54);
+  border: none;
+  border-radius: 5px;
+  height: 30px;
+  width: 50%;
+  font-size: 15px;
+}
+
+.login-footer {
+  /* border: 2px solid white; */
+  display: grid;
+  place-items: center;
+  background-color: rgb(66, 64, 64);
+  height: 25%;
+  border-bottom-right-radius: 10px;
+  border-bottom-left-radius: 10px;
+
+}
+
+.login-footer>button {
+  color: black;
+  width: 30%;
+  height: 30px;
+  border: none;
+  border-radius: 5px;
+}
+
+.signup {
+  height: 70%;
+  width: 30%;
+  padding-left: 2%;
+  padding-right: 2%;
+  box-shadow: 0px 0px 15px 0px wheat;
+  border-radius: 10px;
+}
+
+.signup-header {
+  display: grid;
+  place-items: center;
+  height: 15%;
+}
+
+.below_msg {
+
+  margin-top: 30px;
+}
+
+.signup-body {
+  height: 70%;
+
+}
+
+.signup-body>input {
+  height: 20px;
+}
+
+@media (max-width:900px) {
+  .login {
+    width: 100%;
+  }
+
+  .signup {
+    width: 100%;
+  }
+}

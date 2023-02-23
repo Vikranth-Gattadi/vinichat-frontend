@@ -1,0 +1,18 @@
+{
+    "user": "",
+    "ImgUrl": "",
+    "chats": [
+        {
+            "chat_name": "",
+            "ImgUrl": "",
+            "backGroundImg": "",
+            "messages": [
+                {
+                    "message": "",
+                    "type": "",
+                    "time": ""
+                }
+            ]
+        }
+    ]
+}

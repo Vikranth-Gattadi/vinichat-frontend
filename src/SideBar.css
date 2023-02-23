@@ -1,0 +1,159 @@
+.sidebar_body {
+    flex: column;
+    width: 35%;
+    border-right: 1px solid white;
+    height: 100%;
+}
+
+.option_pannel {
+    width: 65%;
+    display: grid;
+    place-content: center;
+}
+
+.sidebar_header {
+    border-bottom: 1px solid whitesmoke;
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.sidebar_chats {
+    padding-left: 15px;
+    padding-right: 15px;
+    height: 87%;
+    overflow: scroll;
+}
+
+.sidebar_chats::-webkit-scrollbar {
+    display: none;
+}
+
+.sidebar_chats {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+.sidebar_chat {
+    display: flex;
+    padding: 10px;
+    border-bottom: 1px solid rgb(55, 55, 55);
+}
+
+.sidebbar_chat_desc {
+    margin-left: 10px;
+    flex: 1;
+}
+
+.sidebbar_chat_desc>p {
+    font-size: 11px;
+}
+
+.selected {
+    background-color: rgb(52, 52, 53);
+    border-radius: 30px;
+
+}
+
+.sidebar_option {
+    display: flex;
+    padding: 10px;
+    font-size: 20px;
+    border-bottom: 1px solid rgb(55, 55, 55);
+    width: 40%;
+}
+
+.sidebar_chat:hover {
+    cursor: pointer;
+    animation: chat-animation infinite 0.5s;
+    border-radius: 40px;
+}
+
+@keyframes chat-animation {
+    0% {
+        background-color: violet;
+    }
+
+    15% {
+        background-color: indigo;
+    }
+
+    30% {
+        background-color: blue;
+    }
+
+    45% {
+        background-color: green;
+    }
+
+    60% {
+        background-color: yellow;
+    }
+
+    75% {
+        background-color: orange;
+    }
+
+    90% {
+        background-color: red;
+    }
+
+    100% {
+        background-color: black;
+    }
+}
+
+.image_change_pannel  {
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+    border: 2px solid white;
+}
+
+.img_input {
+    background-color: rgb(54, 54, 54);
+    border: none;
+    border-radius: 5px;
+    height: 30px;
+    width: fit-content;
+    font-size: 15px;
+}
+
+.btn {
+    color: black;
+    width: 40%;
+    height: 30px;
+    border: none;
+    border-radius: 5px;
+}
+
+.dialog-main {
+    background-color: rgb(43, 42, 42);
+    color: whitesmoke;
+    width: 35vw;
+
+}
+
+.hola {
+    color: white;
+    border-radius: 5px;
+}
+
+.searched_option {
+    display: flex;
+    justify-content: center;
+    padding: 30px;
+}
+
+.searched_right {
+    display: grid;
+    margin-left: 100px;
+    width: 50%;
+}
+
+.searched_right>input {
+    margin: 10px;
+    padding: 10px;
+    color: whitesmoke;
+    background-color: black;
+}
