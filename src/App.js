@@ -82,7 +82,7 @@ function App() {
                   Mobile : <input type="number" value={mobile} onChange={(e) => setMobile(e.target.value)} placeholder='84*******' /><br /><br />
                   Password : <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} /><br /><br />
                 </div>
-                <div className='login-footer' >{!isLoading ? (<button disabled><img className='spinner_img' src={Spinner} /></button>) : (<button type="submit">Login</button>)}</div>
+                <div className='login-footer' >{isLoading ? (<button disabled><img className='spinner_img' src={Spinner} /></button>) : (<button type="submit">Login</button>)}</div>
               </form>
               <div className='login-header'> New user? create account clicking me <span onClick={() => setSignup(true)} style={{ "cursor": "alias" }}> &#128521;</span></div>
             </div>
