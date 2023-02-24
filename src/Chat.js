@@ -70,7 +70,7 @@ export default function Chat({ mobile, useryo, ImgUrl, chat_data, index }) {
   return (
     <div className='chat'>
       {index === -1 ? (<div className='chat_empty'>
-        ViNiChatting Starts Here
+        Vini Chatting Starts Here
       </div>
       ) : (< >
         <div className="chat_header">
