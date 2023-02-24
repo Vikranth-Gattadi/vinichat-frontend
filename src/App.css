@@ -118,3 +118,24 @@ form {
     width: 100%;
   }
 }
+
+.spinner_img {
+  width: 20%;
+  border-radius: 100%;
+  animation: spin infinite 2s linear;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  50% {
+    transform: rotate(360deg);
+  }
+
+  100% {
+    transform: rotate(0deg);
+  }
+
+}

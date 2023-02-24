@@ -15,6 +15,7 @@ import DialogContentText from '@mui/material/DialogContentText';
 import Dialog from '@mui/material/Dialog';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
+import Spinner from "./images/spinner-removebg-preview.png";
 
 const StyledBadge = styled(Badge)(({ theme }) => ({
     '& .MuiBadge-badge': {
@@ -49,6 +50,7 @@ function SideBar({ mobile, user, ImgUrl, chats }) {
     const [options, setOptions] = useState(false);
     const [optionSelected, setOptionSelected] = useState(false);
     const [open, setOpen] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
     const [imgurl, setImgurl] = useState("");
     const [orgImgUrl, setOrgImgUrl] = useState(ImgUrl);
     const [chatsTemp, setChatsTemp] = useState(chats);
@@ -119,6 +121,7 @@ function SideBar({ mobile, user, ImgUrl, chats }) {
         }
     }
     async function handleImageChange(event) {
+        setIsLoading(true);
         event.preventDefault();
         const data = {
             mobile,
@@ -131,6 +134,7 @@ function SideBar({ mobile, user, ImgUrl, chats }) {
             setOptionSelected(false);
             setOrgImgUrl(imgurl);
             setImgurl("");
+            setIsLoading(false);
         }
         else {
             console.log(res);
@@ -221,7 +225,7 @@ function SideBar({ mobile, user, ImgUrl, chats }) {
                             <input type="text" className='img_input' value={imgurl} onChange={(e) => { setImgurl(e.target.value) }} />
                             <br /><br />
                             <Avatar src={imgurl} sx={{ height: '100px', width: '100px' }} /><br /><br />
-                            <center><button type="submit" className='btn' > Change Image</button></center>
+                            <center>{isLoading ? (<button disabled><img className='spinner_img change_img' src={Spinner} /></button>) : (<button type="submit" className='btn' > Change Image</button>)}</center>
                         </form>
                     </center>
                 </div>
