@@ -241,7 +241,7 @@ function SideBar({ mobile, user, ImgUrl, chats }) {
                             <input type="text" className='img_input' value={imgurl} onChange={(e) => { setImgurl(e.target.value) }} />
                             <br /><br />
                             <Avatar src={imgurl} sx={{ height: '100px', width: '100px' }} /><br /><br />
-                            <center>{isLoading ? (<button disabled><img className='spinner_img change_img' src={Spinner} /></button>) : (<button type="submit" className='btn' > Change Image</button>)}</center>
+                            <center>{isLoading ? (<button disabled><img className='spinner_img change_img' src={Spinner} alt="" /></button>) : (<button type="submit" className='btn' > Change Image</button>)}</center>
                         </form>
                     </center>
                 </div>

@@ -5,6 +5,7 @@ import SideBar from './SideBar';
 import data from "./data.json";
 import Spinner from "./images/spinner-removebg-preview.png";
 
+
 function App() {
   const [user, setUser] = useState(data);
   const [logged, setLogged] = useState(false);
@@ -50,9 +51,16 @@ function App() {
       if (res.status === 201) {
         setSignup(false);
         setIsLoading(false);
-      }
-      else {
+      } else {
         console.log(res);
+      }
+      if (password === vpassword) {
+        setSignup(false);
+        setIsLoading(false);
+      } else {
+        setSignup(true);
+        setIsLoading(true);
+        alert("password doesnot match");
       }
     } catch (err) {
       alert("Something went wrong, try again!")
@@ -70,17 +78,17 @@ function App() {
               </div>
               <form onSubmit={signupHandler}>
                 <div className="login-body signup-body">
-                  <center>Come! Lets Create Account</center><br />
+                  <center style={{marginLeft:"-50px"}}>Come! Lets Create Account</center><br />
                   Full Name :
-                  <input type="text" value={name} onChange={(e) => setName(e.target.value)} /><br /><br />
+                  <input type="text" value={name} onChange={(e) => setName(e.target.value)} style={{"margin-left":"56px"}} required /><br /><br />
                   Mobile :
-                  <input type="number" value={mobile} onChange={(e) => setMobile(e.target.value)} placeholder='84*******' /><br /><br />
+                    <input type="mob" value={mobile} onChange={(e) => setMobile(e.target.value)} placeholder='84*******' style={{ "margin-left": "74px" }} required /><br /><br />
                   Password :
-                  <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} /><br /><br />
+                    <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} style={{ "margin-left": "60px" }}  required /><br /><br />
                   Verify Password :
-                  <input type="password" value={vpassword} onChange={(e) => setVPassword(e.target.value)} /><br /><br />
+                    <input type="password" value={vpassword} onChange={(e) => setVPassword(e.target.value)} style={{ "margin-left": "24px" }} required /><br /><br />
                 </div>
-                <div className='login-footer' >{isLoading ? (<button disabled><img className='spinner_img' src={Spinner} /></button>) : (<button type="submit">Signup</button>)}</div>
+                <div className='login-footer' >{isLoading ? (<button disabled><img className='spinner_img' src={Spinner} alt="" /></button>) : (<button type="submit">Signup</button>)}</div>
               </form>
               <div className='signup-header below_msg'> Returning user? click me for login <span onClick={() => setSignup(false)} style={{ "cursor": "alias" }}> &#128527;</span></div>
             </div>) : (
@@ -89,10 +97,10 @@ function App() {
               </div>
               <form onSubmit={loginHandler}>
                 <div className="login-body"><br />
-                  Mobile : <input type="number" value={mobile} onChange={(e) => setMobile(e.target.value)} placeholder='84*******' /><br /><br />
-                  Password : <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} /><br /><br />
+                      Mobile : <input type="number" value={mobile} onChange={(e) => setMobile(e.target.value)} placeholder='84*******' style={{ "margin-left": "40px" }} required /><br /><br />
+                      Password : <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} style={{ "margin-left": "26px" }} required /><br /><br />
                 </div>
-                <div className='login-footer' >{isLoading ? (<button disabled><img className='spinner_img' src={Spinner} /></button>) : (<button type="submit">Login</button>)}</div>
+                <div className='login-footer' >{isLoading ? (<button disabled><img className='spinner_img' src={Spinner} alt="" /></button>) : (<button type="submit">Login</button>)}</div>
               </form>
               <div className='login-header'> New user? create account clicking me <span onClick={() => setSignup(true)} style={{ "cursor": "alias" }}> &#128521;</span></div>
             </div>
