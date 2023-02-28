@@ -21,15 +21,20 @@ function App() {
       mobile,
       password
     }
-    const res = await axios.post("/vinichat/loginuser", data);
-    if (res.status === 200) {
-      setUser(res.data);
-      setLogged(true);
-      setIsLoading(false);
+    try {
+      const res = await axios.post("/vinichat/loginuser", data);
+      if (res.status === 200) {
+        setUser(res.data);
+        setLogged(true);
+        setIsLoading(false);
+      }
+      else {
+        console.log(res);
+      }
+    } catch (err) {
+      alert("Something went wrong, try again!")
     }
-    else {
-      console.log(res);
-    }
+    setIsLoading(false);
   }
 
   async function signupHandler(event) {
@@ -40,14 +45,19 @@ function App() {
       password,
       user: name
     }
-    const res = await axios.post("/vinichat/createuser", data);
-    if (res.status === 201) {
-      setSignup(false);
-      setIsLoading(false);
+    try {
+      const res = await axios.post("/vinichat/createuser", data);
+      if (res.status === 201) {
+        setSignup(false);
+        setIsLoading(false);
+      }
+      else {
+        console.log(res);
+      }
+    } catch (err) {
+      alert("Something went wrong, try again!")
     }
-    else {
-      console.log(res);
-    }
+    setIsLoading(false);
   }
   return (
     <div className="app">

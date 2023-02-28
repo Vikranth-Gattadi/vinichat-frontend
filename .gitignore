@@ -10,7 +10,6 @@
 
 # production
 /build
-src/axios.js
 # misc
 .DS_Store
 .env.local
@@ -21,3 +20,4 @@ src/axios.js
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+src/axios.js

@@ -72,17 +72,21 @@ function SideBar({ mobile, user, ImgUrl, chats }) {
                 const data = {
                     mobile: searchMobile
                 }
-                const res = await axios.post("/vinichat/finduser", data);
-                if (res.status !== 500) {
-                    console.log(res.data)
-                    if (res.data.code === "404") {
-                        alert(res.data.data);
-                    } else {
-                        setSearchedData(res.data);
-                        setSearchMobile("");
-                        setOpen(false);
-                        setAddChatOpen(true);
+                try {
+                    const res = await axios.post("/vinichat/finduser", data);
+                    if (res.status !== 500) {
+                        console.log(res.data)
+                        if (res.data.code === "404") {
+                            alert(res.data.data);
+                        } else {
+                            setSearchedData(res.data);
+                            setSearchMobile("");
+                            setOpen(false);
+                            setAddChatOpen(true);
+                        }
                     }
+                } catch (err) {
+                    alert("Error in finding user, try again")
                 }
             }
         }
@@ -97,12 +101,16 @@ function SideBar({ mobile, user, ImgUrl, chats }) {
                 backGroundImg: "https://t4.ftcdn.net/jpg/03/87/75/31/360_F_387753109_0xjbgmibs2VrN34VrNYPMjVn883yB632.jpg",
             }
         }
-        const res = await axios.post("/vinichat/addchat", data)
-        if (res.status === 200) {
-            // setChatsTemp(chatsTemp.concat(data.details));
-            alert("added successfully");
-            setAddChatOpen(false);
-        } else {
+        try {
+            const res = await axios.post("/vinichat/addchat", data)
+            if (res.status === 200) {
+                // setChatsTemp(chatsTemp.concat(data.details));
+                alert("added successfully");
+                setAddChatOpen(false);
+            } else {
+                alert("something went wrong try again");
+            }
+        } catch (err) {
             alert("something went wrong try again");
         }
     }
@@ -128,16 +136,20 @@ function SideBar({ mobile, user, ImgUrl, chats }) {
             user,
             imgurl
         }
-        const res = await axios.post("/vinichat/changeimage", data);
-        if (res.status === 202) {
-            alert("changed successfully");
-            setOptionSelected(false);
-            setOrgImgUrl(imgurl);
-            setImgurl("");
-            setIsLoading(false);
-        }
-        else {
-            console.log(res);
+        try {
+            const res = await axios.post("/vinichat/changeimage", data);
+            if (res.status === 202) {
+                alert("changed successfully");
+                setOptionSelected(false);
+                setOrgImgUrl(imgurl);
+                setImgurl("");
+                setIsLoading(false);
+            }
+            else {
+                console.log(res);
+            }
+        } catch (e) {
+            alert("something went wrong try again");
         }
     }
     const handleClickOpen = () => {
@@ -150,12 +162,16 @@ function SideBar({ mobile, user, ImgUrl, chats }) {
             searchUser: true,
             mobile
         }
+        try {
 
-        const res = await axios.post("/vinichat/finduser", req)
-        if (res.status !== 200) {
-            console.log(res);
-        } else {
-            setChatsTemp(res.data.chats);
+            const res = await axios.post("/vinichat/finduser", req)
+            if (res.status !== 200) {
+                console.log(res);
+            } else {
+                setChatsTemp(res.data.chats);
+            }
+        } catch (err) {
+            alert("something went wrong try again");
         }
     }
     useEffect(() => {

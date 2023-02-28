@@ -36,9 +36,13 @@ export default function Chat({ mobile, useryo, ImgUrl, chat_data, index }) {
         "time": nowTime
       }
     }
-    const res = await axios.put("/vinichat/addmessage", req);
-    if (res.status !== 200) {
-      console.log(res);
+    try {
+      const res = await axios.put("/vinichat/addmessage", req);
+      if (res.status !== 200) {
+        console.log(res);
+      }
+    } catch (Err) {
+      alert("Got error at sender side, try again");
     }
     const req1 = {
       "mobile": chat_data.chat_mobile,
@@ -51,9 +55,14 @@ export default function Chat({ mobile, useryo, ImgUrl, chat_data, index }) {
         "time": nowTime
       }
     }
-    const res1 = await axios.put("/vinichat/addmessage", req1);
-    if (res1.status !== 200) {
-      console.log(res1);
+
+    try {
+      const res1 = await axios.put("/vinichat/addmessage", req1);
+      if (res1.status !== 200) {
+        console.log(res1);
+      }
+    } catch (Err) {
+      alert("Got error at reciever side, try again");
     }
     // chat_data.messages = chat_data.messages.concat({ 'message': newMsg, type: "sent", "time": nowTime })
     setNewMsg("");
