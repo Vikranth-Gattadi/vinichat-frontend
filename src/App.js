@@ -41,30 +41,34 @@ function App() {
   async function signupHandler(event) {
     setIsLoading(true);
     event.preventDefault();
-    const data = {
-      mobile,
-      password,
-      user: name
-    }
-    try {
-      const res = await axios.post("/vinichat/createuser", data);
-      if (res.status === 201) {
-        setSignup(false);
-        setIsLoading(false);
-      } else {
-        console.log(res);
-      }
+    if (mobile.length === 10) {
       if (password === vpassword) {
-        setSignup(false);
-        setIsLoading(false);
+        const data = {
+          mobile,
+          password,
+          user: name
+        }
+        try {
+          const res = await axios.post("/vinichat/createuser", data);
+          if (res.status === 201) {
+            setSignup(false);
+            setIsLoading(false);
+          } else {
+            console.log(res);
+            alert("Something went wrong, try again!")
+          }
+          alert("User Added successfully")
+        } catch (err) {
+          alert("Something went wrong, try again!")
+        }
       } else {
-        setSignup(true);
-        setIsLoading(true);
-        alert("password doesnot match");
+        alert("Passwords dosen't match")
       }
-    } catch (err) {
-      alert("Something went wrong, try again!")
+    } else {
+      // console.log(mobile.length)
+      alert("Mobile number sholud be only 10 digits")
     }
+
     setIsLoading(false);
   }
   return (
@@ -78,15 +82,15 @@ function App() {
               </div>
               <form onSubmit={signupHandler}>
                 <div className="login-body signup-body">
-                  <center style={{marginLeft:"-50px"}}>Come! Lets Create Account</center><br />
+                  <center style={{ marginLeft: "-50px" }}>Come! Lets Create Account</center><br />
                   Full Name :
-                  <input type="text" value={name} onChange={(e) => setName(e.target.value)} style={{"margin-left":"56px"}} required /><br /><br />
+                  <input type="text" value={name} onChange={(e) => setName(e.target.value)} style={{ "margin-left": "56px" }} required /><br /><br />
                   Mobile :
-                    <input type="mob" value={mobile} onChange={(e) => setMobile(e.target.value)} placeholder='84*******' style={{ "margin-left": "74px" }} required /><br /><br />
+                  <input type="mob" value={mobile} onChange={(e) => setMobile(e.target.value)} placeholder='84*******' style={{ "margin-left": "74px" }} required /><br /><br />
                   Password :
-                    <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} style={{ "margin-left": "60px" }}  required /><br /><br />
+                  <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} style={{ "margin-left": "60px" }} required /><br /><br />
                   Verify Password :
-                    <input type="password" value={vpassword} onChange={(e) => setVPassword(e.target.value)} style={{ "margin-left": "24px" }} required /><br /><br />
+                  <input type="password" value={vpassword} onChange={(e) => setVPassword(e.target.value)} style={{ "margin-left": "24px" }} required /><br /><br />
                 </div>
                 <div className='login-footer' >{isLoading ? (<button disabled><img className='spinner_img' src={Spinner} alt="" /></button>) : (<button type="submit">Signup</button>)}</div>
               </form>
@@ -97,8 +101,8 @@ function App() {
               </div>
               <form onSubmit={loginHandler}>
                 <div className="login-body"><br />
-                      Mobile : <input type="number" value={mobile} onChange={(e) => setMobile(e.target.value)} placeholder='84*******' style={{ "margin-left": "40px" }} required /><br /><br />
-                      Password : <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} style={{ "margin-left": "26px" }} required /><br /><br />
+                  Mobile : <input type="number" value={mobile} onChange={(e) => setMobile(e.target.value)} placeholder='84*******' style={{ "margin-left": "40px" }} required /><br /><br />
+                  Password : <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} style={{ "margin-left": "26px" }} required /><br /><br />
                 </div>
                 <div className='login-footer' >{isLoading ? (<button disabled><img className='spinner_img' src={Spinner} alt="" /></button>) : (<button type="submit">Login</button>)}</div>
               </form>

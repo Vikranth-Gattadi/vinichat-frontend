@@ -163,7 +163,6 @@ function SideBar({ mobile, user, ImgUrl, chats }) {
             mobile
         }
         try {
-
             const res = await axios.post("/vinichat/finduser", req)
             if (res.status !== 200) {
                 console.log(res);
@@ -238,7 +237,7 @@ function SideBar({ mobile, user, ImgUrl, chats }) {
                     <center>
                         <form onSubmit={handleImageChange}>
                             Image Url :
-                            <input type="text" className='img_input' value={imgurl} onChange={(e) => { setImgurl(e.target.value) }} />
+                            <input type="text" className='img_input' value={imgurl} onChange={(e) => { setImgurl(e.target.value) }} required />
                             <br /><br />
                             <Avatar src={imgurl} sx={{ height: '100px', width: '100px' }} /><br /><br />
                             <center>{isLoading ? (<button disabled><img className='spinner_img change_img' src={Spinner} alt="" /></button>) : (<button type="submit" className='btn' > Change Image</button>)}</center>
