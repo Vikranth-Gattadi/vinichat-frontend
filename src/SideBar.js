@@ -16,6 +16,7 @@ import Dialog from '@mui/material/Dialog';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Spinner from "./images/spinner-removebg-preview.png";
+import Cookies from 'js-cookie';
 
 const StyledBadge = styled(Badge)(({ theme }) => ({
     '& .MuiBadge-badge': {
@@ -58,6 +59,7 @@ function SideBar({ mobile, user, ImgUrl, chats }) {
     const [addChatOpen, setAddChatOpen] = useState(false);
     const [searchMobile, setSearchMobile] = useState("");
     const [searchedData, setSearchedData] = useState("");
+    const [newChatName, setChatName] = useState("");
 
     async function handleSearchChat() {
         if (searchMobile === mobile) {
@@ -75,11 +77,12 @@ function SideBar({ mobile, user, ImgUrl, chats }) {
                 try {
                     const res = await axios.post("/vinichat/finduser", data);
                     if (res.status !== 500) {
-                        console.log(res.data)
+                        // console.log(res.data)
                         if (res.data.code === "404") {
                             alert(res.data.data);
                         } else {
                             setSearchedData(res.data);
+                            setChatName(res.data.user);
                             setSearchMobile("");
                             setOpen(false);
                             setAddChatOpen(true);
@@ -95,7 +98,7 @@ function SideBar({ mobile, user, ImgUrl, chats }) {
         const data = {
             mobile,
             details: {
-                chat_name: searchedData.user,
+                chat_name: newChatName,
                 chat_mobile: searchedData.mobile,
                 ImgUrl: searchedData.ImgUrl,
                 backGroundImg: "https://t4.ftcdn.net/jpg/03/87/75/31/360_F_387753109_0xjbgmibs2VrN34VrNYPMjVn883yB632.jpg",
@@ -153,9 +156,14 @@ function SideBar({ mobile, user, ImgUrl, chats }) {
         }
     }
     const handleClickOpen = () => {
-        console.log(open);
+        // console.log(open);
         setOpen(true);
     };
+    function logout(){
+        window.localStorage.clear();
+        Cookies.remove("viniUser");
+        window.location.href = "/";
+    }
 
     async function fetchChats() {
         const req = {
@@ -167,6 +175,7 @@ function SideBar({ mobile, user, ImgUrl, chats }) {
             if (res.status !== 200) {
                 console.log(res);
             } else {
+                setOrgImgUrl(res.data.ImgUrl);
                 setChatsTemp(res.data.chats);
             }
         } catch (err) {
@@ -224,7 +233,7 @@ function SideBar({ mobile, user, ImgUrl, chats }) {
                     <div className="sidebar_option">
                         Change Password
                     </div><br />
-                    <div className="sidebar_option">
+                    <div className="sidebar_option" onClick={()=> logout()}>
                         Log Out
                     </div>
 
@@ -282,7 +291,7 @@ function SideBar({ mobile, user, ImgUrl, chats }) {
                             <Avatar src={searchedData.ImgUrl} sx={{ height: '100px', width: '100px' }} />
                         </div>
                         <div className='searched_right'>
-                            <input value={searchedData.user} type="text" style={{ fontSize: "15px" }} />
+                            <input value={newChatName} onChange={(e) => setChatName(e.target.value)} type="text" style={{ fontSize: "15px" }} />
                             <input type="number" value={searchedData.mobile} disabled />
                         </div>
                     </div>

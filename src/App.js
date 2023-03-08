@@ -1,10 +1,11 @@
-import { useState } from 'react';
+import { useState ,useEffect} from 'react';
 import './App.css';
 import axios from "./axios";
 import SideBar from './SideBar';
 import data from "./data.json";
 import Spinner from "./images/spinner-removebg-preview.png";
-
+import Cookies from 'js-cookie';
+import Cookie from "js-cookie";
 
 function App() {
   const [user, setUser] = useState(data);
@@ -15,6 +16,29 @@ function App() {
   const [password, setPassword] = useState("");
   const [vpassword, setVPassword] = useState("");
   const [name, setName] = useState("");
+
+  function fetchCookie(){
+    try{
+      if(!Cookies.get("viniUser")){
+        setLogged(false);
+        setUser(data);
+      } else{
+        setIsLoading(true);
+        const userData = JSON.parse(Cookie.get("viniUser")) || null;
+        setUser(data);
+        user.mobile=userData["mobile"]
+        user.user = userData["user"]
+        setLogged(true);
+        setIsLoading(false);
+      }
+    } catch(err){
+      // console.log("HEllo")
+        setLogged(false);
+        setUser(data);
+    }
+  }
+  useEffect(() => fetchCookie(), []);
+
   async function loginHandler(event) {
     setIsLoading(true);
     event.preventDefault();
@@ -25,7 +49,10 @@ function App() {
     try {
       const res = await axios.post("/vinichat/loginuser", data);
       if (res.status === 200) {
+        Cookies.set("viniUser",JSON.stringify({'mobile':res.data.mobile,'user':res.data.user}));
         setUser(res.data);
+        setMobile("");
+        setPassword("");
         setLogged(true);
         setIsLoading(false);
       }
