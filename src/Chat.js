@@ -8,6 +8,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import SentimentSatisfiedAltIcon from '@mui/icons-material/SentimentSatisfiedAlt';
 import MicNoneIcon from '@mui/icons-material/MicNone';
 import axios from './axios';
+import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 
 export default function Chat({ mobile, useryo, ImgUrl, chat_data, index }) {
   // console.log(index);
@@ -76,6 +77,19 @@ export default function Chat({ mobile, useryo, ImgUrl, chat_data, index }) {
     bottomRef.current?.scrollIntoView();
   }, [index === -1 ? "" : chat_data.messages]);
 
+  function closeChatHandler() {
+    const width = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth
+    if (width < 900) {
+      var element = document.getElementsByClassName('sidebar_body')
+      if (element[0].style !== undefined) {
+        element[0].style.display = "block";
+      }
+      var element2 = document.getElementsByClassName('chat')
+      if (element2[0].style !== undefined) {
+        element2[0].style.display = "none";
+      }
+    }
+  }
   return (
     <div className='chat'>
       {index === -1 ? (<div className='chat_empty'>
@@ -83,6 +97,9 @@ export default function Chat({ mobile, useryo, ImgUrl, chat_data, index }) {
       </div>
       ) : (< >
         <div className="chat_header">
+          <IconButton style={{marginRight:"-60px",position:"sticky"}} className='back_arrow' onClick={closeChatHandler}>
+            <ArrowBackIosIcon />
+          </IconButton>
           <Avatar src={chat_data.ImgUrl} />
           <h4>{chat_data.chat_name}</h4>
           <div className='chat_header_right'>

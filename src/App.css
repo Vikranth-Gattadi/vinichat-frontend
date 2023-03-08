@@ -110,22 +110,20 @@ form {
   height: 20px;
 }
 
-@media (max-width:900px) {
-  .login {
-    width: 100%;
-  }
-
-  .signup {
-    width: 100%;
-  }
-}
-
 .spinner_img {
   width: 20%;
   border-radius: 100%;
   animation: spin infinite 2s linear;
 }
 
+@media only screen and (max-width:900px) {
+  .login{
+    width:90%;
+  }
+  .signup{
+    width: 90%;
+  }
+}
 @keyframes spin {
   0% {
     transform: rotate(0deg);
@@ -140,3 +138,41 @@ form {
   }
 
 }
+
+/* @media only screen and (max-width: 600px) {
+  .login{
+    width: 90%;
+    margin: 40px 20px 40px 20px;
+  }
+  .signup{
+    width: 90%;
+    margin: 40px 20px 40px 20px;
+  }
+    .login-body {
+      padding-left: 100px;
+      background-color: rgb(33, 32, 32);
+      padding: 5%;
+      height: 60%;
+      border-top-right-radius: 10px;
+      border-top-left-radius: 10px;
+      font-size: 13px;
+    }
+        .signup-body {
+          height: 70%;
+        }
+}
+
+@media only screen and (min-width: 600px)and (max-width:768px) {
+  .login{
+    width: 90%;
+  }
+  .signup{
+    width: 90%;
+  }
+
+}
+
+@media only screen and (min-width: 769px) and (max-width:992){
+  
+      
+} */

@@ -161,3 +161,16 @@
 .change_img {
     width: 10%;
 }
+
+@media only screen and (max-width: 700px) {
+    .sidebar_body{
+        display: block;
+        width: 100%;
+    }
+    .sidebar_body2{
+        display: none;
+    }
+    .chat{
+        display: none;
+    }
+}
