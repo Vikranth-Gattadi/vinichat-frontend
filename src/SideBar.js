@@ -164,21 +164,7 @@ function SideBar({ mobile, user, ImgUrl, chats }) {
         Cookies.remove("viniUser");
         window.location.href = "/";
     }
-    function openChatHandler(index) {
-        setYoIndex(index);
-        const width = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth
-        if (width < 900) {
-            var element = document.getElementsByClassName('sidebar_body')
-            if (element[0].style !== undefined) {
-                element[0].style.display = "none";
-            }
-            var element2 = document.getElementsByClassName('chat')
-            if (element2[0].style !== undefined) {
-                element2[0].style.display = "block";
-            } 
-        }
-    }
-        
+
     async function fetchChats() {
         const req = {
             searchUser: true,
@@ -204,7 +190,7 @@ function SideBar({ mobile, user, ImgUrl, chats }) {
     }, [refreshInterval]);
     // console.log(yoIndex);
     return (<>
-        <div className="sidebar_body" >
+        <div className='sidebar_body'>
             <div className="sidebar_header">
                 <StyledBadge
                     overlap="circular"
@@ -226,13 +212,13 @@ function SideBar({ mobile, user, ImgUrl, chats }) {
                 <div className="sidebar_chats">
                     {chatsTemp.map((chat, index) => (<>
                         {yoIndex === index ? (
-                            <div className="sidebar_chat selected"  onClick={() => openChatHandler(index)}   >
+                            <div className="sidebar_chat selected" onClick={() => setYoIndex(index)}  >
                                 <Avatar src={chat.ImgUrl} />
                                 <div className="sidebbar_chat_desc" >
                                     <h5>{chat.chat_name}</h5>
                                 </div>
                             </div>
-                        ) : (<div className="sidebar_chat" onClick={() => openChatHandler(index)}  >
+                        ) : (<div className="sidebar_chat" onClick={() => setYoIndex(index)}  >
                             <Avatar src={chat.ImgUrl} />
                             <div className="sidebbar_chat_desc" >
                                 <h5>{chat.chat_name}</h5>
@@ -268,7 +254,7 @@ function SideBar({ mobile, user, ImgUrl, chats }) {
                     </center>
                 </div>
             </div>)
-            : (<Chat id="chat_selected" mobile={mobile} ImgUrl={orgImgUrl} chat_data={chatsTemp[yoIndex]} useryo={user} index={yoIndex} />
+            : (<Chat mobile={mobile} ImgUrl={orgImgUrl} chat_data={chatsTemp[yoIndex]} useryo={user} index={yoIndex} />
             )}
         <Dialog open={open} onClose={handleClose}>
             <div className='dialog-main' >
