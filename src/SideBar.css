@@ -62,7 +62,11 @@
     border-bottom: 1px solid rgb(55, 55, 55);
     width: 40%;
 }
-
+.sidebar_option:hover{
+    cursor: pointer;
+    background-color: rgb(36, 35, 35);
+    border-radius: 40px;
+}
 .sidebar_chat:hover {
     cursor: pointer;
     animation: chat-animation infinite 0.5s;
@@ -160,4 +164,18 @@
 
 .change_img {
     width: 10%;
+}
+
+@media (max-width:900px){
+    .sidebar_body{
+        width:100%;
+        display: block;
+    }
+    .chat{
+        width: 100%;
+        display: none;
+    }
+    .dialog-main{
+        width: fit-content;
+    }
 }

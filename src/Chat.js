@@ -8,6 +8,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import SentimentSatisfiedAltIcon from '@mui/icons-material/SentimentSatisfiedAlt';
 import MicNoneIcon from '@mui/icons-material/MicNone';
 import axios from './axios';
+import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 
 export default function Chat({ mobile, useryo, ImgUrl, chat_data, index }) {
   // console.log(index);
@@ -76,6 +77,19 @@ export default function Chat({ mobile, useryo, ImgUrl, chat_data, index }) {
     bottomRef.current?.scrollIntoView();
   }, [index === -1 ? "" : chat_data.messages]);
 
+  function closeChatHandler() {
+    const width = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
+    if (width <= 900) {
+      let ele = document.getElementsByClassName("sidebar_body")
+      if (ele[0].style !== undefined) {
+        ele[0].style.display = "block";
+      }
+      let ele1 = document.getElementsByClassName("chat")
+      if (ele1[0].style !== undefined) {
+        ele1[0].style.display = "none";
+      }
+    }
+  }
   return (
     <div className='chat'>
       {index === -1 ? (<div className='chat_empty'>
@@ -83,7 +97,11 @@ export default function Chat({ mobile, useryo, ImgUrl, chat_data, index }) {
       </div>
       ) : (< >
         <div className="chat_header">
-          <Avatar src={chat_data.ImgUrl} />
+          <IconButton onClick={closeChatHandler}>
+            <div className ="arrow_back">
+            <ArrowBackIosNewIcon  /></div>
+            <Avatar src={chat_data.ImgUrl} />
+          </IconButton>
           <h4>{chat_data.chat_name}</h4>
           <div className='chat_header_right'>
             <IconButton>
@@ -105,12 +123,12 @@ export default function Chat({ mobile, useryo, ImgUrl, chat_data, index }) {
             {chat_data.messages.map((message) => (
               <>
                 {message.type === "sent" ? (<><p className='message sent '>
-                  <span className='chat_name'>{useryo}</span>
+                  {/* <span className='chat_name'>{useryo}</span> */}
                   {message.message}
                   <span className='time_stamp'>{message.time}</span>
                 </p>
                 </>) : (<><p className='message '>
-                  <span className='chat_name'>{chat_data.chat_name}</span>
+                  {/* <span className='chat_name'>{chat_data.chat_name}</span> */}
                   {message.message}
                   <span className='time_stamp'>{message.time}</span>
                 </p>
