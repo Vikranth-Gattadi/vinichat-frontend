@@ -17,6 +17,7 @@ import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Spinner from "./images/spinner-removebg-preview.png";
 import Cookies from 'js-cookie';
+import Cookie from "js-cookie";
 
 const StyledBadge = styled(Badge)(({ theme }) => ({
     '& .MuiBadge-badge': {
@@ -63,7 +64,6 @@ function SideBar({ mobile, user, ImgUrl, chats }) {
     const [oldPass, setOldPass] = useState("");
     const [newPass, setNewPass] = useState("");
     const [confPass, setConfPass] = useState("");
-    const [orgPass, setOrgPass] = useState(confPass);
 
     async function handleSearchChat() {
         if (searchMobile === mobile) {
@@ -161,26 +161,28 @@ function SideBar({ mobile, user, ImgUrl, chats }) {
     // }
 
     async function handlePassChange(event) {
+        setIsLoading(true);
         event.preventDefault();
         if (newPass === confPass) {
+            const userData = JSON.parse(Cookie.get("viniUser")) || null;
+            if (userData["password"] !== oldPass) {
+                alert("wrong old password")
+                return
+            }
             const data = {
                 mobile,
-                user,
-                password,
-                oldPass,
-                newPass,
-                confPass
+                newPass
             }
             try {
                 const res = await axios.post("/vinichat/changepassword", data);
                 if (res.status === 202) {
                     alert("changed successfully");
+                    userData["password"] = newPass;
+                    Cookies.set("viniUser", JSON.stringify(userData));
                     setOptionSelected(false);
-                    setOrgPass(confPass);
                     setOldPass("");
                     setNewPass("");
                     setConfPass("");
-                    setIsLoading(false);
                 }
                 else {
                     console.log(res);
@@ -191,7 +193,7 @@ function SideBar({ mobile, user, ImgUrl, chats }) {
         } else {
             alert("password doesn't match");
         }
-
+        setIsLoading(false);
     }
     const handleClickOpen = () => {
         // console.log(open);

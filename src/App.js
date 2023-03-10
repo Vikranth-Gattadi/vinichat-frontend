@@ -49,7 +49,7 @@ function App() {
     try {
       const res = await axios.post("/vinichat/loginuser", data);
       if (res.status === 200) {
-        Cookies.set("viniUser",JSON.stringify({'mobile':res.data.mobile,'user':res.data.user}));
+        Cookies.set("viniUser",JSON.stringify({'mobile':res.data.mobile,'user':res.data.user,'password':password}));
         setUser(res.data);
         setMobile("");
         setPassword("");
