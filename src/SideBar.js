@@ -60,6 +60,10 @@ function SideBar({ mobile, user, ImgUrl, chats }) {
     const [searchMobile, setSearchMobile] = useState("");
     const [searchedData, setSearchedData] = useState("");
     const [newChatName, setChatName] = useState("");
+    const [oldPass, setOldPass] = useState("");
+    const [newPass, setNewPass] = useState("");
+    const [confPass, setConfPass] = useState("");
+    const [orgPass, setOrgPass] = useState(confPass);
 
     async function handleSearchChat() {
         if (searchMobile === mobile) {
@@ -131,50 +135,84 @@ function SideBar({ mobile, user, ImgUrl, chats }) {
             setYoIndex(-1);
         }
     }
-    async function handleImageChange(event) {
-        setIsLoading(true);
+    // async function handleImageChange(event) {
+    //     setIsLoading(true);
+    //     event.preventDefault();
+    //     const data = {
+    //         mobile,
+    //         user,
+    //         imgurl
+    //     }
+    //     try {
+    //         const res = await axios.post("/vinichat/changeimage", data);
+    //         if (res.status === 202) {
+    //             alert("changed successfully");
+    //             setOptionSelected(false);
+    //             setOrgImgUrl(imgurl);
+    //             setImgurl("");
+    //             setIsLoading(false);
+    //         }
+    //         else {
+    //             console.log(res);
+    //         }
+    //     } catch (e) {
+    //         alert("something went wrong try again");
+    //     }
+    // }
+
+    async function handlePassChange(event) {
         event.preventDefault();
-        const data = {
-            mobile,
-            user,
-            imgurl
-        }
-        try {
-            const res = await axios.post("/vinichat/changeimage", data);
-            if (res.status === 202) {
-                alert("changed successfully");
-                setOptionSelected(false);
-                setOrgImgUrl(imgurl);
-                setImgurl("");
-                setIsLoading(false);
+        if (newPass === confPass) {
+            const data = {
+                mobile,
+                user,
+                password,
+                oldPass,
+                newPass,
+                confPass
             }
-            else {
-                console.log(res);
+            try {
+                const res = await axios.post("/vinichat/changepassword", data);
+                if (res.status === 202) {
+                    alert("changed successfully");
+                    setOptionSelected(false);
+                    setOrgPass(confPass);
+                    setOldPass("");
+                    setNewPass("");
+                    setConfPass("");
+                    setIsLoading(false);
+                }
+                else {
+                    console.log(res);
+                }
+            } catch (e) {
+                alert("something went wrong try again");
             }
-        } catch (e) {
-            alert("something went wrong try again");
+        } else {
+            alert("password doesn't match");
         }
+
     }
     const handleClickOpen = () => {
         // console.log(open);
         setOpen(true);
     };
-    function logout(){
+    function logout() {
         window.localStorage.clear();
         Cookies.remove("viniUser");
         window.location.href = "/";
     }
-    function openChatHandler(index){
+    function openChatHandler(index) {
         setYoIndex(index);
-        const width = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
-        if(width<=900){
-            let ele = document.getElementsByClassName("sidebar_body")
-            if(ele[0].style!== undefined){
-                ele[0].style.display="none";
+        const width = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth
+        if (width < 900) {
+            var element = document.getElementsByClassName('sidebar_body')
+            if (element[0].style !== undefined) {
+                element[0].style.display = "none";
             }
-            let ele1 = document.getElementsByClassName("chat")
-            if(ele1[0].style!== undefined){
-                ele1[0].style.display="block";
+            var element2 = document.getElementsByClassName('chat')
+            if (element2[0].style !== undefined) {
+                element2[0].style.display = "block";
             }
         }
     }
@@ -204,7 +242,7 @@ function SideBar({ mobile, user, ImgUrl, chats }) {
     }, [refreshInterval]);
     // console.log(yoIndex);
     return (<>
-        <div className='sidebar_body'>
+        <div className="sidebar_body" >
             <div className="sidebar_header">
                 <StyledBadge
                     overlap="circular"
@@ -226,7 +264,7 @@ function SideBar({ mobile, user, ImgUrl, chats }) {
                 <div className="sidebar_chats">
                     {chatsTemp.map((chat, index) => (<>
                         {yoIndex === index ? (
-                            <div className="sidebar_chat selected" onClick={() => openChatHandler(index)}  >
+                            <div className="sidebar_chat selected" onClick={() => openChatHandler(index)}   >
                                 <Avatar src={chat.ImgUrl} />
                                 <div className="sidebbar_chat_desc" >
                                     <h5>{chat.chat_name}</h5>
@@ -241,13 +279,13 @@ function SideBar({ mobile, user, ImgUrl, chats }) {
                     </>))}
                 </div>)
                 : (<div className="sidebar_chats"><br /><br />
-                    <div className="sidebar_option" onClick={() => setOptionSelected(true)}>
+                    <div className="sidebar_option" onClick={() => setOptionSelected(true)} >
                         Change Image
                     </div><br />
-                    <div className="sidebar_option">
+                    <div className="sidebar_option" onClick={() => setOptionSelected(true)}>
                         Change Password
                     </div><br />
-                    <div className="sidebar_option" onClick={()=> logout()}>
+                    <div className="sidebar_option" onClick={() => logout()}>
                         Log Out
                     </div>
 
@@ -258,17 +296,23 @@ function SideBar({ mobile, user, ImgUrl, chats }) {
             <div className='option_pannel'>
                 <div className='image_change_pannel'>
                     <center>
-                        <form onSubmit={handleImageChange}>
+                        {/* <form onSubmit={handleImageChange}>
                             Image Url :
                             <input type="text" className='img_input' value={imgurl} onChange={(e) => { setImgurl(e.target.value) }} required />
                             <br /><br />
                             <Avatar src={imgurl} sx={{ height: '100px', width: '100px' }} /><br /><br />
-                            <center>{isLoading ? (<button disabled><img className='spinner_img change_img' src={Spinner} alt="" /></button>) : (<button type="submit" className='btn' > Change Image</button>)}</center>
+                        <center>{isLoading ? (<button disabled><img className='spinner_img change_img' src={Spinner} alt="" /></button>) : (<button type="submit" className='btn' > Change Image</button>)}</center>
+                        </form> */}
+                        <form onSubmit={handlePassChange}>
+                            Old Password:     <input type="password" className='oldPass' value={oldPass} style={{ marginLeft: "30px", color: "black" }} onChange={(e) => { setOldPass(e.target.value) }} required /> <br /><br />
+                            New Password:     <input type="password" className='newPass' value={newPass} style={{ marginLeft: "25px", color: "black" }} onChange={(e) => { setNewPass(e.target.value) }} required /><br /> <br />
+                            Confirm Password: <input type="password" className='confPass' value={confPass} style={{ color: "black" }} onChange={(e) => { setConfPass(e.target.value) }} required /><br /> <br />
+                            <center>{isLoading ? (<button disabled><img className='spinner_img change_img' src={Spinner} alt="" /></button>) : (<button type="submit" className='btn' > Change Password</button>)}</center>
                         </form>
                     </center>
                 </div>
             </div>)
-            : (<Chat mobile={mobile} ImgUrl={orgImgUrl} chat_data={chatsTemp[yoIndex]} useryo={user} index={yoIndex} />
+            : (<Chat id="chat_selected" mobile={mobile} ImgUrl={orgImgUrl} chat_data={chatsTemp[yoIndex]} useryo={user} index={yoIndex} />
             )}
         <Dialog open={open} onClose={handleClose}>
             <div className='dialog-main' >
