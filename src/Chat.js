@@ -27,12 +27,13 @@ export default function Chat({ mobile, useryo, ImgUrl, chat_data, index }) {
       nowTime += "0";
     }
     nowTime += date.getMinutes();
-
+    const message = newMsg;
+    setNewMsg("");
     const req = {
       "mobile": mobile,
       "chat_mobile": chat_data.chat_mobile,
       "message_data": {
-        "message": newMsg,
+        "message": message,
         "type": "sent",
         "time": nowTime
       }
@@ -51,7 +52,7 @@ export default function Chat({ mobile, useryo, ImgUrl, chat_data, index }) {
       "chat_name": useryo,
       "ImgUrl": ImgUrl,
       "message_data": {
-        "message": newMsg,
+        "message": message,
         "type": "",
         "time": nowTime
       }
@@ -66,13 +67,28 @@ export default function Chat({ mobile, useryo, ImgUrl, chat_data, index }) {
       alert("Got error at reciever side, try again");
     }
     // chat_data.messages = chat_data.messages.concat({ 'message': newMsg, type: "sent", "time": nowTime })
-    setNewMsg("");
     // console.log(chat_data.messages); 
   };
 
+  async function markasread() {
+    const req = {
+      "mobile": mobile,
+      "chat_mobile": chat_data.chat_mobile,
+    }
+    try {
+      const res = await axios.put("/vinichat/markasread", req);
+      if (res.status !== 202) {
+        console.log(res);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  }
   const bottomRef = useRef(null);
-
   useEffect(() => {
+    if (index !== -1) {
+      markasread();
+    }
     // 👇️ scroll to bottom every time messages change
     bottomRef.current?.scrollIntoView();
   }, [index === -1 ? "" : chat_data.messages]);
@@ -98,8 +114,8 @@ export default function Chat({ mobile, useryo, ImgUrl, chat_data, index }) {
       ) : (< >
         <div className="chat_header">
           <IconButton onClick={closeChatHandler}>
-            <div className ="arrow_back">
-            <ArrowBackIosNewIcon  /></div>
+            <div className="arrow_back">
+              <ArrowBackIosNewIcon /></div>
             <Avatar src={chat_data.ImgUrl} />
           </IconButton>
           <h4>{chat_data.chat_name}</h4>

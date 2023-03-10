@@ -1,4 +1,4 @@
-import { useState ,useEffect} from 'react';
+import { useState, useEffect } from 'react';
 import './App.css';
 import axios from "./axios";
 import SideBar from './SideBar';
@@ -17,24 +17,24 @@ function App() {
   const [vpassword, setVPassword] = useState("");
   const [name, setName] = useState("");
 
-  function fetchCookie(){
-    try{
-      if(!Cookies.get("viniUser")){
+  function fetchCookie() {
+    try {
+      if (!Cookies.get("viniUser")) {
         setLogged(false);
         setUser(data);
-      } else{
+      } else {
         setIsLoading(true);
         const userData = JSON.parse(Cookie.get("viniUser")) || null;
         setUser(data);
-        user.mobile=userData["mobile"]
+        user.mobile = userData["mobile"]
         user.user = userData["user"]
         setLogged(true);
         setIsLoading(false);
       }
-    } catch(err){
+    } catch (err) {
       // console.log("HEllo")
-        setLogged(false);
-        setUser(data);
+      setLogged(false);
+      setUser(data);
     }
   }
   useEffect(() => fetchCookie(), []);
@@ -49,7 +49,7 @@ function App() {
     try {
       const res = await axios.post("/vinichat/loginuser", data);
       if (res.status === 200) {
-        Cookies.set("viniUser",JSON.stringify({'mobile':res.data.mobile,'user':res.data.user,'password':password}));
+        Cookies.set("viniUser", JSON.stringify({ 'mobile': res.data.mobile, 'user': res.data.user, 'password': password }));
         setUser(res.data);
         setMobile("");
         setPassword("");
@@ -60,7 +60,13 @@ function App() {
         console.log(res);
       }
     } catch (err) {
-      alert("Something went wrong, try again!")
+      if (err.response) {
+        if (err.response.status == 404) {
+          alert("User not found, enter correct mobile or password. ")
+        } else {
+          alert("Something went wrong, try again!")
+        }
+      }
     }
     setIsLoading(false);
   }

@@ -106,6 +106,25 @@
         background-color: black;
     }
 }
+.lastmsg{
+    display: flex;
+    width: 100%;
+    /* border: 1px solid whitesmoke; */
+    margin-top:5px ;
+}
+.lastmsg > h5{
+    margin-right: auto;
+}
+.lastmsg > .unread{
+    color:black;
+    margin-left: auto;
+    background-color: whitesmoke;
+    border-radius: 100%;
+    width:15px;
+    height:15px;
+    display: grid;
+    place-content: center;
+}
 
 .image_change_pannel {
     display: flex;

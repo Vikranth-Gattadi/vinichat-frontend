@@ -56,7 +56,7 @@ function SideBar({ mobile, user, ImgUrl, chats }) {
     const [imgurl, setImgurl] = useState("");
     const [orgImgUrl, setOrgImgUrl] = useState(ImgUrl);
     const [chatsTemp, setChatsTemp] = useState(chats);
-    const [refreshInterval, setRefreshInterval] = useState(2000 || 0);
+    const [refreshInterval, setRefreshInterval] = useState(1500 || 0);
     const [addChatOpen, setAddChatOpen] = useState(false);
     const [searchMobile, setSearchMobile] = useState("");
     const [searchedData, setSearchedData] = useState("");
@@ -270,12 +270,20 @@ function SideBar({ mobile, user, ImgUrl, chats }) {
                                 <Avatar src={chat.ImgUrl} />
                                 <div className="sidebbar_chat_desc" >
                                     <h5>{chat.chat_name}</h5>
+                                    <div className="lastmsg">
+                                        <h6>{chat.last_message}</h6>
+                                    </div>
                                 </div>
                             </div>
                         ) : (<div className="sidebar_chat" onClick={() => openChatHandler(index)}  >
                             <Avatar src={chat.ImgUrl} />
                             <div className="sidebbar_chat_desc" >
                                 <h5>{chat.chat_name}</h5>
+                                <div className="lastmsg">
+                                    <h6>{chat.last_message}</h6>
+                                    {(chat.un_read !== 0) && (<p className='unread'>{chat.un_read}</p>)}
+                                </div>
+
                             </div>
                         </div>)}
                     </>))}
