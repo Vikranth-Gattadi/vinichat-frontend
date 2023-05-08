@@ -50,10 +50,10 @@ const StyledBadge = styled(Badge)(({ theme }) => ({
     },
 }));
 function SideBar({ mobile, user, ImgUrl, chats }) {
-    const [snackOpen, setSnackOpen] = useState(true);
+    const [snackOpen, setSnackOpen] = useState(false);
     const [yoIndex, setYoIndex] = useState(-1);
     const [options, setOptions] = useState(false);
-    const [optionSelected, setOptionSelected] = useState(false);
+    const [optionSelected, setOptionSelected] = useState("");
     const [open, setOpen] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [imgurl, setImgurl] = useState("");
@@ -132,36 +132,36 @@ function SideBar({ mobile, user, ImgUrl, chats }) {
     function handleOptions() {
         if (options) {
             setOptions(false);
-            setOptionSelected(false);
+            setOptionSelected("");
         } else {
             setOptions(true);
             setYoIndex(-1);
         }
     }
-    // async function handleImageChange(event) {
-    //     setIsLoading(true);
-    //     event.preventDefault();
-    //     const data = {
-    //         mobile,
-    //         user,
-    //         imgurl
-    //     }
-    //     try {
-    //         const res = await axios.post("/vinichat/changeimage", data);
-    //         if (res.status === 202) {
-    //             alert("changed successfully");
-    //             setOptionSelected(false);
-    //             setOrgImgUrl(imgurl);
-    //             setImgurl("");
-    //             setIsLoading(false);
-    //         }
-    //         else {
-    //             console.log(res);
-    //         }
-    //     } catch (e) {
-    //         alert("something went wrong try again");
-    //     }
-    // }
+    async function handleImageChange(event) {
+        setIsLoading(true);
+        event.preventDefault();
+        const data = {
+            mobile,
+            user,
+            imgurl
+        }
+        try {
+            const res = await axios.post("/vinichat/changeimage", data);
+            if (res.status === 202) {
+                alert("changed successfully");
+                setOptionSelected("");
+                setOrgImgUrl(imgurl);
+                setImgurl("");
+                setIsLoading(false);
+            }
+            else {
+                console.log(res);
+            }
+        } catch (e) {
+            alert("something went wrong try again");
+        }
+    }
 
     async function handlePassChange(event) {
         setIsLoading(true);
@@ -182,7 +182,7 @@ function SideBar({ mobile, user, ImgUrl, chats }) {
                     alert("changed successfully");
                     userData["password"] = newPass;
                     Cookies.set("viniUser", JSON.stringify(userData));
-                    setOptionSelected(false);
+                    setOptionSelected("");
                     setOldPass("");
                     setNewPass("");
                     setConfPass("");
@@ -247,7 +247,7 @@ function SideBar({ mobile, user, ImgUrl, chats }) {
         }
     }, [refreshInterval]);
     return (<>
-        <div className={(snackOpen===true)?"sidebar_body_yo":"sidebar_body"}  >
+        <div className={(snackOpen === true) ? "sidebar_body_yo" : "sidebar_body"}  >
             <div className="sidebar_header">
                 <StyledBadge
                     overlap="circular"
@@ -292,10 +292,10 @@ function SideBar({ mobile, user, ImgUrl, chats }) {
                     </>))}
                 </div>)
                 : (<div className="sidebar_chats"><br /><br />
-                    <div className="sidebar_option" onClick={() => setOptionSelected(true)} >
+                    <div className="sidebar_option" onClick={() => setOptionSelected("image")} >
                         Change Image
                     </div><br />
-                    <div className="sidebar_option" onClick={() => setOptionSelected(true)}>
+                    <div className="sidebar_option" onClick={() => setOptionSelected("password")}>
                         Change Password
                     </div><br />
                     <div className="sidebar_option" onClick={() => logout()}>
@@ -305,23 +305,27 @@ function SideBar({ mobile, user, ImgUrl, chats }) {
                 </div>
                 )}
         </div >
-        {optionSelected ? (
+        {(optionSelected !== "") ? (
             <div className='option_pannel'>
                 <div className='image_change_pannel'>
                     <center>
-                        {/* <form onSubmit={handleImageChange}>
-                            Image Url :
-                            <input type="text" className='img_input' value={imgurl} onChange={(e) => { setImgurl(e.target.value) }} required />
-                            <br /><br />
-                            <Avatar src={imgurl} sx={{ height: '100px', width: '100px' }} /><br /><br />
-                        <center>{isLoading ? (<button disabled><img className='spinner_img change_img' src={Spinner} alt="" /></button>) : (<button type="submit" className='btn' > Change Image</button>)}</center>
-                        </form> */}
-                        <form onSubmit={handlePassChange}>
-                            Old Password:     <input type="password" className='oldPass' value={oldPass} style={{ marginLeft: "30px", color: "black" }} onChange={(e) => { setOldPass(e.target.value) }} required /> <br /><br />
-                            New Password:     <input type="password" className='newPass' value={newPass} style={{ marginLeft: "25px", color: "black" }} onChange={(e) => { setNewPass(e.target.value) }} required /><br /> <br />
-                            Confirm Password: <input type="password" className='confPass' value={confPass} style={{ color: "black" }} onChange={(e) => { setConfPass(e.target.value) }} required /><br /> <br />
-                            <center>{isLoading ? (<button disabled><img className='spinner_img change_img' src={Spinner} alt="" /></button>) : (<button type="submit" className='btn' > Change Password</button>)}</center>
-                        </form>
+                        {optionSelected === "image" && (
+                            <form onSubmit={handleImageChange}>
+                                Image Url :
+                                <input type="text" className='img_input' value={imgurl} onChange={(e) => { setImgurl(e.target.value) }} required />
+                                <br /><br />
+                                <Avatar src={imgurl} sx={{ height: '100px', width: '100px' }} /><br /><br />
+                                <center>{isLoading ? (<button disabled><img className='spinner_img change_img' src={Spinner} alt="" /></button>) : (<button type="submit" className='btn' > Change Image</button>)}</center>
+                            </form>
+                        )}
+                        {optionSelected === "password" && (
+                            <form onSubmit={handlePassChange}>
+                                Old Password:     <input type="password" className='oldPass' value={oldPass} style={{ marginLeft: "30px", color: "black" }} onChange={(e) => { setOldPass(e.target.value) }} required /> <br /><br />
+                                New Password:     <input type="password" className='newPass' value={newPass} style={{ marginLeft: "25px", color: "black" }} onChange={(e) => { setNewPass(e.target.value) }} required /><br /> <br />
+                                Confirm Password: <input type="password" className='confPass' value={confPass} style={{ color: "black" }} onChange={(e) => { setConfPass(e.target.value) }} required /><br /> <br />
+                                <center>{isLoading ? (<button disabled><img className='spinner_img change_img' src={Spinner} alt="" /></button>) : (<button type="submit" className='btn' > Change Password</button>)}</center>
+                            </form>
+                        )}
                     </center>
                 </div>
             </div>)
