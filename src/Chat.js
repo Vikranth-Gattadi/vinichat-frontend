@@ -10,7 +10,7 @@ import MicNoneIcon from '@mui/icons-material/MicNone';
 import axios from './axios';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 
-export default function Chat({ mobile, useryo, ImgUrl, chat_data, index }) {
+export default function Chat({snackOpen, mobile, useryo, ImgUrl, chat_data, index }) {
   // console.log(index);
   const [newMsg, setNewMsg] = useState("");
 
@@ -28,6 +28,9 @@ export default function Chat({ mobile, useryo, ImgUrl, chat_data, index }) {
     }
     nowTime += date.getMinutes();
     const message = newMsg;
+    if (message ===""){
+      return 
+    }
     setNewMsg("");
     const req = {
       "mobile": mobile,
@@ -66,7 +69,7 @@ export default function Chat({ mobile, useryo, ImgUrl, chat_data, index }) {
     } catch (Err) {
       alert("Got error at reciever side, try again");
     }
-    // chat_data.messages = chat_data.messages.concat({ 'message': newMsg, type: "sent", "time": nowTime })
+    chat_data.messages = chat_data.messages.concat(req.message_data )
     // console.log(chat_data.messages); 
   };
 
@@ -107,7 +110,7 @@ export default function Chat({ mobile, useryo, ImgUrl, chat_data, index }) {
     }
   }
   return (
-    <div className='chat'>
+    <div className={(snackOpen===true)?"chat_yo":"chat"}>
       {index === -1 ? (<div className='chat_empty'>
         Vini Chatting Starts Here
       </div>

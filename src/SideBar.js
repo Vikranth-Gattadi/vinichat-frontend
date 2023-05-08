@@ -18,6 +18,8 @@ import TextField from '@mui/material/TextField';
 import Spinner from "./images/spinner-removebg-preview.png";
 import Cookies from 'js-cookie';
 import Cookie from "js-cookie";
+import Snackbar from '@mui/material/Snackbar';
+
 
 const StyledBadge = styled(Badge)(({ theme }) => ({
     '& .MuiBadge-badge': {
@@ -48,6 +50,7 @@ const StyledBadge = styled(Badge)(({ theme }) => ({
     },
 }));
 function SideBar({ mobile, user, ImgUrl, chats }) {
+    const [snackOpen, setSnackOpen] = useState(true);
     const [yoIndex, setYoIndex] = useState(-1);
     const [options, setOptions] = useState(false);
     const [optionSelected, setOptionSelected] = useState(false);
@@ -229,11 +232,12 @@ function SideBar({ mobile, user, ImgUrl, chats }) {
             if (res.status !== 200) {
                 console.log(res);
             } else {
+                setSnackOpen(false);
                 setOrgImgUrl(res.data.ImgUrl);
                 setChatsTemp(res.data.chats);
             }
         } catch (err) {
-            alert("something went wrong try again");
+            setSnackOpen(true);
         }
     }
     useEffect(() => {
@@ -242,9 +246,8 @@ function SideBar({ mobile, user, ImgUrl, chats }) {
             return () => clearInterval(interval);
         }
     }, [refreshInterval]);
-    // console.log(yoIndex);
     return (<>
-        <div className="sidebar_body" >
+        <div className={(snackOpen===true)?"sidebar_body_yo":"sidebar_body"}  >
             <div className="sidebar_header">
                 <StyledBadge
                     overlap="circular"
@@ -322,7 +325,7 @@ function SideBar({ mobile, user, ImgUrl, chats }) {
                     </center>
                 </div>
             </div>)
-            : (<Chat id="chat_selected" mobile={mobile} ImgUrl={orgImgUrl} chat_data={chatsTemp[yoIndex]} useryo={user} index={yoIndex} />
+            : (<Chat snackOpen={snackOpen} id="chat_selected" mobile={mobile} ImgUrl={orgImgUrl} chat_data={chatsTemp[yoIndex]} useryo={user} index={yoIndex} />
             )}
         <Dialog open={open} onClose={handleClose}>
             <div className='dialog-main' >
@@ -370,6 +373,11 @@ function SideBar({ mobile, user, ImgUrl, chats }) {
                 </DialogActions>
             </div>
         </Dialog>
+        <Snackbar
+            open={snackOpen}
+            autoHideDuration={2000}
+            message="You're offline"
+        />
     </>
     )
 }
