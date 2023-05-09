@@ -211,7 +211,7 @@ export default function Chat({ snackOpen, mobile, useryo, ImgUrl, chat_data, ind
                     <tr><td style={{ "color": "black", "font-size": "12px", "textAlign": "justify" }} colSpan={"2"}>Click on the emoji </td>
                     </tr>
                     {Object.keys(emojiMap).map((key, index) => (
-                      (index % 2 === 0) && (
+                      (index % 2 === 0 ) && (
                         <tr>
                           <th onClick={() => addEmoji(key)} className="th_emoji"> {emojiMap[key]} </th>
                           <th onClick={() => addEmoji(Object.keys(emojiMap)[index + 1])} className="th_emoji">{emojiMap[Object.keys(emojiMap)[index + 1]]}</th>
