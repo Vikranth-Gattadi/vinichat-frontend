@@ -14,6 +14,7 @@ export default function Chat({ snackOpen, mobile, useryo, ImgUrl, chat_data, ind
   // console.log(index);
   const [newMsg, setNewMsg] = useState("");
   const [showEmojis, setShowEmojis] = useState(false);
+  const [emojiOption, setEmojiOption] = useState("message");
   async function handleSubmit(event) {
     event.preventDefault();
     const date = new Date();
@@ -110,19 +111,23 @@ export default function Chat({ snackOpen, mobile, useryo, ImgUrl, chat_data, ind
       }
     }
   }
+  const escape = s => s.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
   const emojiMap = {
-    ':)': '😊',
-    ':(': '🙁',
-    ':D': '😁',
-    ';(': '😥',
-    ':O': '😮',
-    ';)': '😉',
-    '8)': '😎',
-    '>:@': '😡',
+    ':) ': '😊',
+    ':( ': '🙁',
+    ':D ': '😁',
+    ';( ': '😥',
+    ':O ': '😮',
+    ';) ': '😉',
+    '8) ': '😎',
+    '>:@ ': '😡',
   };
   const replaceStringWithEmoji = (string) => {
-    let regex = /(?::\)|:\(|:D|;\(|:O|;\)|8\)|>:@)/g
-    return string.replace(regex, (m) => emojiMap[m] || m)
+    const pattern = new RegExp(
+      Object.keys(emojiMap).map(escape).join('|'),
+      'g'
+    );
+    return string.replace(pattern, (m) => emojiMap[m] || m)
   };
   const messageSetting = (msg) => {
     setNewMsg(replaceStringWithEmoji(msg))
@@ -180,18 +185,41 @@ export default function Chat({ snackOpen, mobile, useryo, ImgUrl, chat_data, ind
           </div>
           {showEmojis && (
             <div className='emoji_picker'>
-              <p style={{ "color": "black", "font-size": "12px", "font-weight": "900", "textAlign": "justify" }}>Type the Message to get respective emojis or Click on Emoji:</p>
-              <table width={"100%"}>
-                <tr><th style={{ "color": "black", "font-size": "12px", "textDecoration": "underline" }} >Message</th>
-                  <th style={{ "color": "black", "font-size": "12px", "textDecoration": "underline" }}>Emoji</th></tr>
-                {Object.keys(emojiMap).map((key, index) => (
-                  <tr>
-                    <th style={{ "color": "black", "font-size": "12px" }}>{key}</th>
-                    <th onClick={() => addEmoji(key)} className="th_emoji">
-                      {emojiMap[key]}
-                    </th>
-                  </tr>
-                ))}
+              <table width={"100%"} >
+                <tr>
+                  <th style={{ "color": "black", "font-size": "12px", "textDecoration": "underline" }} width={"50%"} className="btn_emoji_option" onClick={() => setEmojiOption("message")}>Message</th>
+                  <th style={{ "color": "black", "font-size": "12px", "textDecoration": "underline" }} className="btn_emoji_option" onClick={() => setEmojiOption("emoji")}>Emoji</th>
+                </tr>
+                {emojiOption === "message" && (
+                  <>
+                    <tr><td style={{ "color": "black", "font-size": "12px", "textAlign": "justify" }} colSpan={"2"}>Type the Message to get respective emojis </td>
+                    </tr>
+                    <tr>
+                      <th style={{ "color": "black", "font-size": "12px", "textDecoration": "underline" }} >Message</th>
+                      <th style={{ "color": "black", "font-size": "12px", "textDecoration": "underline" }}>Emoji</th>
+                    </tr>
+                    {Object.keys(emojiMap).map((key, index) => (
+                      <tr>
+                        <th style={{ "color": "black", "font-size": "12px" }}>{key}</th>
+                        <th>{emojiMap[key]} </th>
+                      </tr>
+                    ))}
+                  </>
+                )}
+                {emojiOption === "emoji" && (
+                  <>
+                    <tr><td style={{ "color": "black", "font-size": "12px", "textAlign": "justify" }} colSpan={"2"}>Click on the emoji </td>
+                    </tr>
+                    {Object.keys(emojiMap).map((key, index) => (
+                      (index % 2 === 0) && (
+                        <tr>
+                          <th onClick={() => addEmoji(key)} className="th_emoji"> {emojiMap[key]} </th>
+                          <th onClick={() => addEmoji(Object.keys(emojiMap)[index + 1])} className="th_emoji">{emojiMap[Object.keys(emojiMap)[index + 1]]}</th>
+                        </tr>
+                      )
+                    ))}
+                  </>
+                )}
               </table>
             </div>
           )}
