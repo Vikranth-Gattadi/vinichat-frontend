@@ -137,3 +137,24 @@
         width: auto;
     }
 }
+.emoji_picker{
+    background-color: white;
+    width:10%;
+    height: 20%;
+    border-radius: 5px;
+    overflow: scroll;
+    position:absolute;
+    bottom: 11%;
+    padding: 7px;
+}
+
+.emoji_picker::-webkit-scrollbar {
+    display: none;
+    scroll-behavior:smooth;
+
+}
+
+.emoji_picker {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}

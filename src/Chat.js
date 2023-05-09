@@ -10,10 +10,10 @@ import MicNoneIcon from '@mui/icons-material/MicNone';
 import axios from './axios';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 
-export default function Chat({snackOpen, mobile, useryo, ImgUrl, chat_data, index }) {
+export default function Chat({ snackOpen, mobile, useryo, ImgUrl, chat_data, index }) {
   // console.log(index);
   const [newMsg, setNewMsg] = useState("");
-
+  const [showEmojis, setShowEmojis] = useState(true);
   async function handleSubmit(event) {
     event.preventDefault();
     const date = new Date();
@@ -28,8 +28,8 @@ export default function Chat({snackOpen, mobile, useryo, ImgUrl, chat_data, inde
     }
     nowTime += date.getMinutes();
     const message = newMsg;
-    if (message ===""){
-      return 
+    if (message === "") {
+      return
     }
     setNewMsg("");
     const req = {
@@ -69,7 +69,7 @@ export default function Chat({snackOpen, mobile, useryo, ImgUrl, chat_data, inde
     } catch (Err) {
       alert("Got error at reciever side, try again");
     }
-    chat_data.messages = chat_data.messages.concat(req.message_data )
+    chat_data.messages = chat_data.messages.concat(req.message_data)
     // console.log(chat_data.messages); 
   };
 
@@ -109,8 +109,25 @@ export default function Chat({snackOpen, mobile, useryo, ImgUrl, chat_data, inde
       }
     }
   }
+  const emojiMap = {
+    ':)': '😊',
+    ':(': '🙁',
+    ':D': '😁',
+    ';(': '😥',
+    ':O': '😮',
+    ';)': '😉',
+    '8)': '😎',
+    '>:@': '😡',
+  };
+  const replaceStringWithEmoji = (string) => {
+    let regex = /(?::\)|:\(|:D|;\(|:O'|;\)|8\)|>:@)/g
+    return string.replace(regex, (m) => emojiMap[m] || m)
+  };
+  const messageSetting = (msg) => {
+    setNewMsg(replaceStringWithEmoji(msg))
+  }
   return (
-    <div className={(snackOpen===true)?"chat_yo":"chat"}>
+    <div className={(snackOpen === true) ? "chat_yo" : "chat"}>
       {index === -1 ? (<div className='chat_empty'>
         Vini Chatting Starts Here
       </div>
@@ -157,12 +174,26 @@ export default function Chat({snackOpen, mobile, useryo, ImgUrl, chat_data, inde
             ))}
             <div ref={bottomRef} />
           </div>
+            {showEmojis && (
+              <div className='emoji_picker'>
+                <p style={{ "color": "black", "font-size": "12px", "font-weight": "900" }}>Type the Message to get respective emojis:</p>
+                <table width={"100%"}>
+                  <tr><th style={{ "color": "black", "font-size": "12px", "textDecoration": "underline" }} >Message</th>
+                    <th style={{ "color": "black", "font-size": "12px", "textDecoration": "underline" }}>Emoji</th></tr>
+                  {Object.keys(emojiMap).map((key, index) => (
+                    <tr><th style={{ "color": "black", "font-size": "12px" }}>{key}</th>
+                      <th>{emojiMap[key]}</th></tr>
+                  ))}
+                </table>
+              </div>
+            )}
+
           <div className="chat_footer">
-            <IconButton>
+            <IconButton onClick={() => setShowEmojis(!showEmojis)}>
               <SentimentSatisfiedAltIcon />
             </IconButton>
             <form onSubmit={handleSubmit} >
-              <input type="text" value={newMsg} onChange={event => setNewMsg(event.target.value)}
+              <input type="text" value={newMsg} onChange={event => messageSetting(event.target.value)}
                 name='new_msg' placeholder='Type your message' />
               <input type="submit" style={{ "display": "none" }} />
             </form>
