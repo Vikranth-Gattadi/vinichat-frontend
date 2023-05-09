@@ -13,7 +13,7 @@ import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 export default function Chat({ snackOpen, mobile, useryo, ImgUrl, chat_data, index }) {
   // console.log(index);
   const [newMsg, setNewMsg] = useState("");
-  const [showEmojis, setShowEmojis] = useState(true);
+  const [showEmojis, setShowEmojis] = useState(false);
   async function handleSubmit(event) {
     event.preventDefault();
     const date = new Date();
@@ -31,6 +31,7 @@ export default function Chat({ snackOpen, mobile, useryo, ImgUrl, chat_data, ind
     if (message === "") {
       return
     }
+    setShowEmojis(false);
     setNewMsg("");
     const req = {
       "mobile": mobile,
@@ -120,11 +121,14 @@ export default function Chat({ snackOpen, mobile, useryo, ImgUrl, chat_data, ind
     '>:@': '😡',
   };
   const replaceStringWithEmoji = (string) => {
-    let regex = /(?::\)|:\(|:D|;\(|:O'|;\)|8\)|>:@)/g
+    let regex = /(?::\)|:\(|:D|;\(|:O|;\)|8\)|>:@)/g
     return string.replace(regex, (m) => emojiMap[m] || m)
   };
   const messageSetting = (msg) => {
     setNewMsg(replaceStringWithEmoji(msg))
+  }
+  const addEmoji = (key) => {
+    setNewMsg(newMsg + emojiMap[key])
   }
   return (
     <div className={(snackOpen === true) ? "chat_yo" : "chat"}>
@@ -174,19 +178,23 @@ export default function Chat({ snackOpen, mobile, useryo, ImgUrl, chat_data, ind
             ))}
             <div ref={bottomRef} />
           </div>
-            {showEmojis && (
-              <div className='emoji_picker'>
-                <p style={{ "color": "black", "font-size": "12px", "font-weight": "900" }}>Type the Message to get respective emojis:</p>
-                <table width={"100%"}>
-                  <tr><th style={{ "color": "black", "font-size": "12px", "textDecoration": "underline" }} >Message</th>
-                    <th style={{ "color": "black", "font-size": "12px", "textDecoration": "underline" }}>Emoji</th></tr>
-                  {Object.keys(emojiMap).map((key, index) => (
-                    <tr><th style={{ "color": "black", "font-size": "12px" }}>{key}</th>
-                      <th>{emojiMap[key]}</th></tr>
-                  ))}
-                </table>
-              </div>
-            )}
+          {showEmojis && (
+            <div className='emoji_picker'>
+              <p style={{ "color": "black", "font-size": "12px", "font-weight": "900", "textAlign": "justify" }}>Type the Message to get respective emojis or Click on Emoji:</p>
+              <table width={"100%"}>
+                <tr><th style={{ "color": "black", "font-size": "12px", "textDecoration": "underline" }} >Message</th>
+                  <th style={{ "color": "black", "font-size": "12px", "textDecoration": "underline" }}>Emoji</th></tr>
+                {Object.keys(emojiMap).map((key, index) => (
+                  <tr>
+                    <th style={{ "color": "black", "font-size": "12px" }}>{key}</th>
+                    <th onClick={() => addEmoji(key)} className="th_emoji">
+                      {emojiMap[key]}
+                    </th>
+                  </tr>
+                ))}
+              </table>
+            </div>
+          )}
 
           <div className="chat_footer">
             <IconButton onClick={() => setShowEmojis(!showEmojis)}>
